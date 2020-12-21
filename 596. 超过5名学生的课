@@ -1,0 +1,23 @@
+class Solution:
+    def canPartitionKSubsets(self, nums: List[int], k: int) -> bool:
+        if sum(nums) % k != 0 or len(nums) < k:
+            return False
+        used = []
+        target = sum(nums) // k
+        # 排序,方便遍历
+        nums.sort(reverse = True)
+        tag = False
+        # n、t、index分别为剩余子集数量、当前元素和、遍历元素下标
+        def dfs(n,t,index,target,used):
+            nonlocal tag
+            if t == target:
+                dfs(n - 1,0,0,target,used)
+            if n == 0:
+                tag = True
+                return
+            if not tag:
+               for j in range(index,len(nums)):
+                   if j not in used and t + nums[j] <= target:
+                          dfs(n,t + nums[j],j + 1,target,used + [j])
+        dfs(k,0,0,target,used)
+        return tag
