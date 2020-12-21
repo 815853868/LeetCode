@@ -1,0 +1,22 @@
+#这道题和石子游戏很像。
+#这里我们定义dp[i][j]为[i,j]中玩家1比玩家2最多能获得的分数.
+#首先直观可知dp[i][i]=nums[i].
+#[i,j]区间内玩家有两种操作方式：
+#1.先拿nums[j]，玩家1获得了nums[j].此时dp[i][j-1]就是玩家2比玩家1最多能获得的分数,此时玩家1比玩家2最多能获得的分数就是nums[j]-dp[i][j-1]
+#2.先拿nums[i]，玩家1获得了nums[i].此时dp[i+1][j]就是玩家2比玩家1最多能获得的分数,此时玩家1比玩家2最多能获得的分数就是nums[i]-dp[i+1][j]
+#所以：dp[i][j]=max(nums[j]-dp[i][j-1],nums[i]-dp[i+1][j])
+#判断dp[0][-1]与0的大小就可知玩家1是否获胜。
+
+
+
+class Solution:
+    def PredictTheWinner(self, nums: List[int]) -> bool:
+        n=len(nums)
+        dp=[[0]*n for _ in range(n)]
+        for i in range(n):
+            dp[i][i]=nums[i]
+        for i in range(n-2,-1,-1):
+            for j in range(i+1,n):
+                dp[i][j]=max(nums[j]-dp[i][j-1],nums[i]-dp[i+1][j])
+        return dp[0][-1]>=0
+        
