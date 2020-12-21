@@ -1,0 +1,6 @@
+class Solution:
+    def findTheDifference(self, s: str, t: str) -> str:
+        a = "".join([s,t])
+        for ch in a:
+            if a.count(ch) % 2 == 1:
+                return ch
