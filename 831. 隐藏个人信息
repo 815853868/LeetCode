@@ -1,0 +1,25 @@
+func maskPII(S string) string {
+	// 判断是否是电子邮箱
+	if strings.Contains(S, "@") {
+		S1 := strings.ToLower(S) //	转换为小写
+		SArr := strings.Split(S1, "@")	// 使用"@"分割
+		return SArr[0][0:1] + "*****" + SArr[0][len(SArr[0]) - 1:] + "@" + SArr[1]
+	} else {
+		endS, num := "", 0
+		for i := len(S) - 1; i >= 0; i -- { // 获取后四位并标记数字个数
+			if S[i:i + 1] >= "0" && S[i:i + 1] <= "9" {
+				if len(endS) < 4 {
+					endS = S[i:i + 1] + endS
+				}
+				num ++
+			}
+		}
+		switch num {
+		case 13:return "+***-***-***-" + endS
+		case 12:return "+**-***-***-" + endS
+		case 11:return "+*-***-***-" + endS
+		default: // 默认为10位
+			return "***-***-" + endS
+		}
+	}
+}
