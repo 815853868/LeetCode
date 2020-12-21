@@ -1,0 +1,64 @@
+解题思路
+#（1）为了让记忆的key 可hash，对hand编码，因为hand最长为5，球的颜色最多是5种，为了直观，直接10进制编码。万位代表R，千位代表Y，依次类推。
+#（2）依次遍历board，每组相连的珠子，只要可能消除，就尝试消除：
+#     2.1 如果相连的珠子数大于等于3，那么会直接消除
+#     2.2 如果相连的珠子数小于3，那么必须射出3 - same_count 个珠子才能消除
+#     2.3 如果相连的珠子 加上手上的珠子，不够3个，那么不能消除。
+
+import functools
+
+class Solution:
+    def findMinStep(self, board: str, hand: str) -> int:
+        codes = {"R": 10000, "Y": 1000, "B": 100, "G": 10, "W": 1}
+
+        def encode(char_count):
+            result = 0
+            for c in char_count:
+                result += codes[c] * char_count[c]
+
+            return result
+
+        def decode(value):
+            chars = "WGBYR"
+            idx = 0
+            result = {"W": 0, "G": 0, "B": 0, "Y": 0, "R": 0}
+            while value > 0:
+                result[chars[idx]] = value % 10
+                value //= 10
+                idx += 1
+            return result
+
+        @functools.lru_cache(None)
+        def findMin(board, hand_code):
+            if not board:
+                return 0
+
+            steps = float("inf")
+            hand_count = decode(hand_code)
+            same_count = 1
+            idx = 1
+            while idx <= len(board):
+                if idx == len(board) or board[idx] != board[idx - 1]:
+                    last_char = board[idx - 1]
+                    if same_count + hand_count[last_char] >= 3:
+                        # 如果same_count大于等于3，那就让珠子自己消除，shoot为0
+                        shoot = max(0, 3 - same_count)
+                        # last_char对应的颜色用了多少颗减去相应的值
+                        hand_count[last_char] -= shoot
+                        # 子问题 + shoot = 当前问题的解
+                        steps = min(steps, findMin(board[:idx - same_count] + board[idx:], encode(hand_count)) + shoot)
+                        # 回溯
+                        hand_count[last_char] += shoot
+                    same_count = 1
+                else:
+                    same_count += 1
+
+                idx += 1
+            return steps
+
+        hand_code = 0
+        for c in hand:
+            hand_code += codes[c]
+
+        result = findMin(board, hand_code)
+        return -1 if result == float("inf") else result
