@@ -1,0 +1,5 @@
+#正则表达式一步到位
+class Solution:
+    def removeComments(self, source: List[str]) -> List[str]:
+        s = re.sub('//.*|/\*(\s|.)*?\*/', '', '\n'.join(source)) 
+        return filter(len, s.split('\n'))
