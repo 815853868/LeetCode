@@ -1,0 +1,27 @@
+#如果一个单词根目标相似度为x, 那只有可能跟这个单词相似度是x的单词才可能成为候选
+#根据当前才出来的相似度，随机在剩下的单词中选择根当前单词相似度也为x的单词作为
+#下一个单词
+
+import random
+from typing import List
+class Solution:
+    def findSecretWord(self, wordlist: List[str], master: 'Master') -> None:
+
+        def match_num(s1, s2):
+            cnt = 0
+            for ch1, ch2 in zip(s1, s2):
+                if ch1 == ch2:
+                    cnt += 1
+            return cnt
+
+        for _ in range(10):
+            idx = random.randint(0, len(wordlist)-1)
+            w = wordlist[idx]
+            cnt = master.guess(w)
+            print(w, cnt)
+            if cnt == 6:
+                break
+
+            wordlist = [new_w for new_w in wordlist if match_num(w, new_w) == cnt]
+
+
