@@ -1,0 +1,5 @@
+代码
+
+class Solution:
+    def maxPower(self, s: str) -> int:
+        return max(len(list(group)) for _, group in itertools.groupby(s))
