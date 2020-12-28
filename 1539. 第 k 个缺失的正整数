@@ -1,0 +1,18 @@
+解题思路
+相当于两个list相比较，创建一个新的列表更加方便
+但这里要判段k是否大于新列表的长度
+
+代码
+
+class Solution:
+    def findKthPositive(self, arr: List[int], k: int) -> int:
+        #两个list的比较
+        lack_list=[]
+        for i in range(arr[-1]):
+            if i+1 not in arr:
+                lack_list.append(i+1)
+        #print(lack_list)
+        if k<=len(lack_list):
+            return lack_list[k-1]
+        else:
+            return arr[-1]+k-len(lack_list)
