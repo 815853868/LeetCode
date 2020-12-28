@@ -1,0 +1,37 @@
+python3双百，单调队列，队列维护与当前点距离小于等于k的前面的点的信息，因为y1+y2+x2-x1=x2+y2+y1-x1，可以知道我们要看的是前面每个点的y-x值，记录一个前面节点的单调减队列，循环每次进入新点的时：
+1.把队列头更新到与当前节点距离<=k的位置，如果有，则更新最大值；没有则把队列取剩一个元素；
+2.把当前节点加入队列，如果当前节点y-x值小于队列尾，直接加入即可；如果相等，则更新队列尾坐标值让离新结点更近；如果大于队尾值，则从队列尾出发往前找，直到找到不小于它的队尾，把它接在后面成为新队尾，当然要考虑队列没有比它大的情况。
+
+class Node:
+    def __init__(self, x, val):
+        self.x = x
+        self.val = val
+        self.next = None
+        self.front = None
+
+
+class Solution:
+    def findMaxValueOfEquation(self, points: List[List[int]], k: int) -> int:
+        res = -1000000000
+        head = Node(points[0][0], points[0][1] - points[0][0])
+        end = head
+        for x in points[1:]:
+            while head != end and x[0] - head.x > k:
+                head = head.next
+            if x[0] - head.x <= k:
+                res = max(res, head.val + x[0] + x[1])
+            y = x[1] - x[0]
+            while end != head and y > end.val:
+                end = end.front
+            if end == head:
+                if y > end.val:
+                    end.val = y
+                    end.x = x[0]
+            if y < end.val:
+                new_Node = Node(x[0], y)
+                end.next = new_Node
+                new_Node.front = end
+                end = new_Node
+            elif y == end.val:
+                end.x = x[0]
+        return res
