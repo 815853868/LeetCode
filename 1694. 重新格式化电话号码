@@ -1,0 +1,27 @@
+class Solution:
+    def reformatNumber(self, number: str) -> str:
+        number=number.replace("-","")
+        number=number.replace(" ","")        #去掉输入字符串中的空格和破折号
+        list_num = list(number)
+        n=len(list_num)
+        if n<3:
+            return "".join(list_num)         #数字不超过三个时直接输出
+        if n==4:
+            list_num.insert(-2,"-")          #数字个数为4时的特判
+            return "".join(list_num)
+        if n%3 ==0:                          #数字个数是3的倍数，3个一组，每隔三个插入一个破折号
+            for i in range(int((n/3)-1)):
+                list_num.insert(i+3*(i+1),"-")
+            return ''.join(list_num)
+        if (n-2)%3==0:                       #数字个数是3*N+2时，对三个一组的数每隔三个插入破折号，最后两个单独数前插入“-”
+            for i in range(int(((n-2)/3)-1)):
+                list_num.insert(i+3*(i+1),"-")
+            list_num.insert(-2,"-")
+            return "".join(list_num)
+        if (n-4)%3==0 and n>4:               #数字个数时3*N+4时，对对三个一组的数每隔三个插入破折号，最后两组单独数前插入“-”
+            for i in range(int(((n-4)/3)-1)):
+                list_num.insert(i+3*(i+1),"-")
+            list_num.insert(-2,"-")
+            list_num.insert(-5,"-")
+            return "".join(list_num)
+
