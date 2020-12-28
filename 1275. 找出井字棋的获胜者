@@ -1,0 +1,17 @@
+class Solution:
+    def tictactoe(self, moves: List[List[int]]) -> str:
+        def is_pending(x):
+            for i in x:
+                for j in i:
+                    if j=='':return True
+            return False
+
+        don_not_want_b_face=[['','',''] for i in range(3)]
+        for i in range(len(moves)):
+            if i&1==0:don_not_want_b_face[moves[i][0]][moves[i][1]]='A'
+            else:don_not_want_b_face[moves[i][0]][moves[i][1]]='B'
+        print(don_not_want_b_face)
+        if don_not_want_b_face[0][0]+don_not_want_b_face[1][1]+don_not_want_b_face[2][2]=='AAA' or don_not_want_b_face[0][0]+don_not_want_b_face[0][1]+don_not_want_b_face[0][2]=='AAA' or don_not_want_b_face[0][0]+don_not_want_b_face[1][0]+don_not_want_b_face[2][0]=='AAA' or don_not_want_b_face[2][0]+don_not_want_b_face[2][1]+don_not_want_b_face[2][2]=='AAA' or don_not_want_b_face[0][2]+don_not_want_b_face[1][2]+don_not_want_b_face[2][2]=='AAA' or don_not_want_b_face[0][2]+don_not_want_b_face[1][1]+don_not_want_b_face[2][0]=='AAA' or don_not_want_b_face[1][0]+don_not_want_b_face[1][1]+don_not_want_b_face[1][2]=='AAA' or don_not_want_b_face[0][1]+don_not_want_b_face[1][1]+don_not_want_b_face[2][1]=='AAA':return 'A'
+        elif don_not_want_b_face[0][0]+don_not_want_b_face[1][1]+don_not_want_b_face[2][2]=='BBB' or don_not_want_b_face[0][0]+don_not_want_b_face[0][1]+don_not_want_b_face[0][2]=='BBB' or don_not_want_b_face[0][0]+don_not_want_b_face[1][0]+don_not_want_b_face[2][0]=='BBB' or don_not_want_b_face[2][0]+don_not_want_b_face[2][1]+don_not_want_b_face[2][2]=='BBB' or don_not_want_b_face[0][2]+don_not_want_b_face[1][2]+don_not_want_b_face[2][2]=='BBB' or don_not_want_b_face[0][2]+don_not_want_b_face[1][1]+don_not_want_b_face[2][0]=='BBB' or don_not_want_b_face[1][0]+don_not_want_b_face[1][1]+don_not_want_b_face[1][2]=='BBB' or don_not_want_b_face[0][1]+don_not_want_b_face[1][1]+don_not_want_b_face[2][1]=='BBB':return 'B'
+        elif is_pending(don_not_want_b_face):return 'Pending'
+        else:return 'Draw'
