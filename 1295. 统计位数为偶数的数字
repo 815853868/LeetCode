@@ -1,0 +1,17 @@
+res 代表 统计 位数 是偶数的个数
+flag 代表当前数 是否是 偶个位数(位数为偶数)
+1.遍历每个数 ， 默认flag 是 False, 表示是个位数，num>=10 or num <=-10 判断该数是否是多位数
+2.如果是个位数(1个位数)，则 不进while , flag 为False （0）
+3.如果是多位数， 那么进入 while循环 ，不断的除以10 ，并且 flag 取反，表示位数 由 偶转为奇 或 奇转为偶
+4.res += flag 表示 统计 为1 的偶数个数
+5.返回
+
+def findNumbers(self, nums: List[int]) -> int:
+    res = 0
+    for num in nums:
+        flag = False
+        while  num>=10 or num <=-10:
+            flag = not(flag)
+            num //= 10
+        res += flag
+    return res
